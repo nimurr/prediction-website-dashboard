@@ -7,17 +7,17 @@ import { imageBaseUrl } from "../../../config/imageBaseUrl";
 import { RiNotificationFill } from "react-icons/ri";
 import userImage from "/public/Auth/user.png";
 import { MdNotificationsNone } from "react-icons/md";
-import { useGetUserProfileQuery } from "../../../redux/features/setting/settingApi";
 import { useEffect } from "react";
 import Url from "../../../redux/baseApi/forImageUrl";
+import { useGetProfileQuery } from "../../../redux/features/user/userApi";
 
 const Header = ({ toggleSidebar }) => {
   const navigate = useNavigate();
 
-  const { data: userProfile, refetch } = useGetUserProfileQuery();
+  const { data: userProfile, refetch } = useGetProfileQuery();
+  const user = userProfile?.data?.attributes?.user;
 
-  const user = userProfile?.data;
-  // console.log(user);
+  console.log(user);
 
   useEffect(() => {
     refetch();
@@ -45,8 +45,8 @@ const Header = ({ toggleSidebar }) => {
 
         </Link>
         <img
-          className="w-12 rounded-full"
-          src={user?.profileImageUrl ? Url + user?.profileImageUrl : userImage}
+          className="w-12 h-12 rounded-full"
+          src={user?.profileImage ? Url + user?.profileImage : userImage}
           alt="User Profile"
         />
         <div className="hidden md:block">

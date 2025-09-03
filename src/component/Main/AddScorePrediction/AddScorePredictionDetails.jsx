@@ -17,7 +17,7 @@ const StatusTag = ({ status }) => {
         return <Tag color="green">Winner</Tag>;
     }
     // keep label exactly as provided ("lossed")
-    return <Tag color="red">lossed</Tag>;
+    return <Tag color="red">Yet to Results</Tag>;
 };
 
 const AddScorePredictionDetails = () => {

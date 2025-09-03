@@ -15,6 +15,14 @@ const userApi = baseApi.injectEndpoints({
         method: "GET",
       })
     }),
+    updateProfile: builder.mutation({
+      query: (data) => ({
+        url: `/users/self/update`,
+        method: "PATCH",
+        body: data
+      }),
+      invalidatesTags: ["User-2"],
+    }),
     getAllCollectors: builder.query({
       query: ({ from, to }) => ({
         url: `/get-collaborator-data?from=${from}&to=${to}`,
@@ -46,4 +54,4 @@ const userApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllUsersQuery, useGetProfileQuery, useGetAllCollectorsQuery, useGetSingleUserQuery, useBlockUserMutation, useUnBlockUserMutation } = userApi;
+export const { useGetAllUsersQuery, useGetProfileQuery, useGetAllCollectorsQuery, useGetSingleUserQuery, useBlockUserMutation, useUnBlockUserMutation, useUpdateProfileMutation } = userApi;

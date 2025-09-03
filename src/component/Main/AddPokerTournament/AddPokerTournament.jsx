@@ -92,7 +92,7 @@ const AddPokerTournament = () => {
                 title: "Rewards",
                 dataIndex: "rewards",
                 key: "rewards",
-                ellipsis: true,
+                render: (_, r) => <span>{r.rewards}$</span>,
             },
             {
                 title: "Join Link",

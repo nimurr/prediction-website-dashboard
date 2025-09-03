@@ -219,8 +219,8 @@ const AddScorePrediction = () => {
             },
         ],
         [handleEdit, handleDelete]
-    ); 
-    
+    );
+
 
     return (
         <section className="py-5 px-3">

@@ -6,21 +6,26 @@ import { LuImagePlus } from "react-icons/lu";
 import defaultUserImage from "/public/Auth/user.png";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import { useUpdateProfileMutation } from "../../redux/features/setting/settingApi";
+
 import Url from "../../redux/baseApi/forImageUrl";
-import { useGetProfileQuery } from "../../redux/features/user/userApi";
+import { useGetProfileQuery, useUpdateProfileMutation } from "../../redux/features/user/userApi";
 
 const PersonalinfoEdit = () => {
     const navigate = useNavigate();
     const [form] = Form.useForm();
     const { data: userProfile, isLoading, refetch } = useGetProfileQuery();
     const user = userProfile?.data?.attributes?.user;
-    console.log(user);
+
+    console.log(userProfile)
+
+
 
     const [fileList, setFileList] = useState([]);
     const [imageUrl, setImageUrl] = useState(defaultUserImage);
     const [updateImage, setUpdateImage] = useState(null);
     const [phoneNumber, setPhoneNumber] = useState("");
+
+    console.log(imageUrl)
 
     // ✅ **Load User Data When API Call Completes**
     useEffect(() => {
@@ -30,7 +35,7 @@ const PersonalinfoEdit = () => {
                 email: user.email || "",
             });
             setPhoneNumber(user.phoneNumber || "");
-            setImageUrl(user.profileImageUrl ? Url + user.profileImageUrl : defaultUserImage);
+            setImageUrl(user.profileImage ? Url + user.profileImage : defaultUserImage);
         }
     }, [user, form]);
 
@@ -48,17 +53,18 @@ const PersonalinfoEdit = () => {
 
 
     const [updateProfile] = useUpdateProfileMutation();
+
     useEffect(() => {
         refetch();
     }, [refetch]);
 
     const handleUpdateProfile = async (values) => {
         const formData = new FormData();
-        formData.append("name", values.name);
+        formData.append("fullName", values.name);
         formData.append("phoneNumber", phoneNumber);
 
         if (fileList[0]?.originFileObj) {
-            formData.append("imageOfProfile", fileList[0].originFileObj);
+            formData.append("profileImage", fileList[0].originFileObj);
         }
 
         try {

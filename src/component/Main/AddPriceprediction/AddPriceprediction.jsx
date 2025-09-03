@@ -78,14 +78,14 @@ const AddPriceprediction = () => {
                 render: (s) => <span className="font-mono">{moment(s).format("D-MM-YYYY")}</span>,
             },
             {
-                title: "Ads Link",
-                dataIndex: "joinLink",
-                key: "joinLink",
+                title: "Reward Amount",
+                dataIndex: "predictedPrice",
+                key: "predictedPrice",
                 ellipsis: true,
                 render: (s) => (
-                    <Link target="_blank" to={s} className="font-mono underline">
-                        {s}
-                    </Link>
+                    <p  to={s} className="font-mono">
+                        {s}$
+                    </p>
                 ),
             },
             {
@@ -161,7 +161,7 @@ const AddPriceprediction = () => {
                 : [],
             title: row.bitcoinTitle || row.title,
             subtitle: row.bitcoinSubtitle || row.subtitle,
-            joinLink: row.joinLink,
+            predictedPrice: row.predictedPrice,
             deadline: row.predictionDeadline ? dayjs(row.predictionDeadline) : null,
         });
         setOpenForm(true);
@@ -205,7 +205,7 @@ const AddPriceprediction = () => {
                     // id: `row-${Date.now()}`,
                     bitcoinTitle: values.title,
                     bitcoinSubtitle: values.subtitle,
-                    joinLink: values.joinLink,
+                    predictedPrice: values.predictedPrice,
                     predictionDeadline: deadlineStr,
                     bitcoinImage: imageUrl,
                 };
@@ -217,7 +217,7 @@ const AddPriceprediction = () => {
                     formData.append("bitcoinImage", imageUrl);
                     formData.append("bitcoinTitle", values.title);
                     formData.append("bitcoinSubtitle", values.subtitle);
-                    formData.append("joinLink", values.joinLink);
+                    formData.append("predictedPrice", values.predictedPrice);
                     formData.append("predictionDeadline", deadlineStr);
 
                     const response = await createPricePrediction(formData).unwrap();
@@ -241,7 +241,7 @@ const AddPriceprediction = () => {
                                 ...r,
                                 bitcoinTitle: values.title,
                                 bitcoinSubtitle: values.subtitle,
-                                joinLink: values.joinLink,
+                                predictedPrice: values.predictedPrice,
                                 predictionDeadline: deadlineStr,
                                 bitcoinImage: imageUrl,
                             }
@@ -255,7 +255,7 @@ const AddPriceprediction = () => {
                     }
                     formData.append("bitcoinTitle", values.title);
                     formData.append("bitcoinSubtitle", values.subtitle);
-                    formData.append("joinLink", values.joinLink);
+                    formData.append("predictedPrice", values.predictedPrice);
                     formData.append("predictionDeadline", deadlineStr);
                     console.log(editingRow.id);
 
@@ -283,7 +283,7 @@ const AddPriceprediction = () => {
     return (
         <section className="py-5 px-3">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-semibold">Bitcoin Management</h2>
+                <h2 className="text-2xl font-semibold">Price Prediction Management</h2>
                 <button
                     className="bg-[#704AAA] py-3 px-8 rounded-lg text-white"
                     onClick={handleAddNew}
@@ -379,11 +379,11 @@ const AddPriceprediction = () => {
 
                     {/* Join Link */}
                     <Form.Item
-                        label="Join Link"
-                        name="joinLink"
-                        rules={[{ required: true, message: "Please enter join link" }]}
+                        label="Reward"
+                        name="predictedPrice"
+                        rules={[{ required: true, message: "Please enter Reward Amount" }]}
                     >
-                        <Input className="!h-12" placeholder="Enter Join Link" />
+                        <Input className="!h-12" placeholder="Enter Reward Amount" />
                     </Form.Item>
 
                     {/* Prediction Deadline */}

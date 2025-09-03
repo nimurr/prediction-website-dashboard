@@ -17,7 +17,7 @@ const StatusTag = ({ status }) => {
     if (status?.toLowerCase() === "winner") {
         return <Tag color="green">Winner</Tag>;
     }
-    return <Tag color="red">lossed</Tag>;
+    return <Tag color="red">Yet to Results</Tag>;
 };
 
 const AddPricepredictionDetails = () => {

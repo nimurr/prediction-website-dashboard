@@ -189,8 +189,6 @@ const router = createBrowserRouter([
 
 
 
-
-
       {
         path: "/all-document",
         element: <AllDocument />,

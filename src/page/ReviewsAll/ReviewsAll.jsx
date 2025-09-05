@@ -1,28 +1,15 @@
 import React, { useState } from "react";
-import { Table, Modal, Button } from "antd";
+import { Table, Modal, Button, message } from "antd";
 import { Link } from "react-router-dom";
 import { IoEyeOutline } from "react-icons/io5";
-import { FaRegEdit } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
+import { useDeleteReviewMutation, useGetAllReviewQuery } from "../../redux/features/reviews/reviews";
+import { imageBaseUrl } from "../../config/imageBaseUrl";
+import moment from "moment";
 
 const ReviewsAll = () => {
-    const [data, setData] = useState([
-        {
-            key: "1",
-            image: "https://example.com/review.png",
-            bonusTitle: "Welcome Bonus",
-            freeSpinsBonus: "50 Free Spins",
-            lastUpdateDate: "2025-08-25",
-            adminAvgRating: 4.5,
-            userAvgRating: 4.2,
-            summaryTitle: "Top Casino Review",
-            allInfo: [
-                { heading: "Info 1", description: "Description 1" },
-                { heading: "Info 2", description: "Description 2" },
-            ],
-            positiveSide: [{ heading: "Good payout" }, { heading: "Fast support" }],
-            negativeSide: [{ heading: "Limited games" }],
-        },
-    ]);
+    const { data: alldata, isLoading, isError } = useGetAllReviewQuery();
+    const data = alldata?.data || [];
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedReview, setSelectedReview] = useState(null);
@@ -32,61 +19,65 @@ const ReviewsAll = () => {
         setIsModalOpen(true);
     };
 
+    const [deleteReview] = useDeleteReviewMutation();
+
+    const handleDelete = (record) => {
+        Modal.confirm({
+            title: "Are you sure you want to delete this review?",
+            okText: "Yes",
+            okType: "danger",
+            cancelText: "No",
+            onOk: async () => {
+                try {
+                    const res = await deleteReview({ id: record?._id });
+                    if (res?.data?.status) {
+                        message.success("Review deleted successfully!");
+                    } else {
+                        message.error("Failed to delete. Try again.");
+                    }
+                } catch (error) {
+                    message.error("Failed to delete. Try again.");
+                }
+            },
+        });
+    };
+
     const columns = [
         {
             title: "Image",
             dataIndex: "image",
             key: "image",
-            render: (text) => <img src={text} alt="review" style={{ width: 50 }} />,
+            render: (text) => <img src={imageBaseUrl + text} alt="review" style={{ width: 100 }} />,
         },
-        {
-            title: "Bonus Title",
-            dataIndex: "bonusTitle",
-            key: "bonusTitle",
-        },
-        {
-            title: "Free Spins",
-            dataIndex: "freeSpinsBonus",
-            key: "freeSpinsBonus",
-        },
-        {
-            title: "Admin Rating",
-            dataIndex: "adminAvgRating",
-            key: "adminAvgRating",
-        },
-        {
-            title: "User Rating",
-            dataIndex: "userAvgRating",
-            key: "userAvgRating",
-        },
-        {
-            title: "Summary",
-            dataIndex: "summaryTitle",
-            key: "summaryTitle",
-        },
+        { title: "Bonus Title", dataIndex: "bonusTitle", key: "bonusTitle" },
+        { title: "Free Spins", dataIndex: "freeSpinsBonus", key: "freeSpinsBonus" },
+        { title: "Admin Rating", dataIndex: "adminAvgRating", key: "adminAvgRating" },
+        { title: "User Rating", dataIndex: "userAvgRating", key: "userAvgRating" },
+        { title: "Summary", dataIndex: "summaryTitle", key: "summaryTitle" },
         {
             title: "Last Update",
             dataIndex: "lastUpdateDate",
             key: "lastUpdateDate",
+            render: (text) => <span>{moment(text).format("DD-MM-YYYY")}</span>,
         },
         {
             title: "Actions",
             key: "actions",
             render: (_, record) => (
                 <div className="flex gap-5 items-center text-base">
-                    <Link to={`/reviews-all/edit-review/${record.key}`}>
-                        <FaRegEdit className="text-blue-800 size-5" />
-                    </Link>
-                    <button
-                        className="text-[#704AAA]"
-                        onClick={() => handleView(record)}
-                    >
+                    <button className="text-[#704AAA]" onClick={() => handleView(record)}>
                         <IoEyeOutline className="size-6" />
+                    </button>
+                    <button className="text-[#704AAA]" onClick={() => handleDelete(record)}>
+                        <MdDeleteForever className="size-6" />
                     </button>
                 </div>
             ),
         },
     ];
+
+    if (isLoading) return <p>Loading reviews...</p>;
+    if (isError) return <p>Error fetching reviews</p>;
 
     return (
         <div className="p-4">
@@ -98,9 +89,9 @@ const ReviewsAll = () => {
                     Add Review
                 </Link>
             </div>
-            <Table columns={columns} dataSource={data} rowKey="key" />
 
-            {/* Modal for viewing all details */}
+            <Table columns={columns} dataSource={data} rowKey="_id" />
+
             <Modal
                 open={isModalOpen}
                 title="Review Details"
@@ -117,7 +108,7 @@ const ReviewsAll = () => {
                         <div>
                             <strong>Image:</strong>
                             <img
-                                src={selectedReview.image}
+                                src={imageBaseUrl + selectedReview.image}
                                 alt="review"
                                 style={{ width: 100, marginLeft: 10 }}
                             />
@@ -132,9 +123,9 @@ const ReviewsAll = () => {
                         <div>
                             <strong>All Info:</strong>
                             <ul className="list-disc ml-6">
-                                {selectedReview.allInfo.map((info, i) => (
+                                {selectedReview.allInfo?.map((info, i) => (
                                     <li key={i}>
-                                        <strong>{info.heading}:</strong> {info.description}
+                                        <strong>{info.title}:</strong> {info.subTitle}
                                     </li>
                                 ))}
                             </ul>
@@ -143,8 +134,8 @@ const ReviewsAll = () => {
                         <div>
                             <strong>Positive Side:</strong>
                             <ul className="list-disc ml-6">
-                                {selectedReview.positiveSide.map((p, i) => (
-                                    <li key={i}>{p.heading}</li>
+                                {selectedReview.positivesSides?.map((p, i) => (
+                                    <li key={i}>{p}</li>
                                 ))}
                             </ul>
                         </div>
@@ -152,8 +143,8 @@ const ReviewsAll = () => {
                         <div>
                             <strong>Negative Side:</strong>
                             <ul className="list-disc ml-6">
-                                {selectedReview.negativeSide.map((n, i) => (
-                                    <li key={i}>{n.heading}</li>
+                                {selectedReview.negativesSides?.map((n, i) => (
+                                    <li key={i}>{n}</li>
                                 ))}
                             </ul>
                         </div>

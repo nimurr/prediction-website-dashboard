@@ -12,6 +12,6 @@ export const baseApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["User", "PredictionApi", "PricePrediction", "PokerTournament", 'User-2', "Setting", 'Privacy-Policy', "Profile"],
+  tagTypes: ["User", "PredictionApi", "PricePrediction", "Reviews", "PokerTournament", 'User-2', "Setting", 'Privacy-Policy', "Profile"],
   endpoints: () => ({}),
 });

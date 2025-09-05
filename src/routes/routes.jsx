@@ -58,6 +58,7 @@ import AddPokerTournamentUserDetails from "../component/Main/AddPokerTournament/
 import ReviewsAll from "../page/ReviewsAll/ReviewsAll";
 import ReviewsAllAddRevirew from "../page/ReviewsAll/ReviewsAllAddRevirew";
 import ReviewsAllEditRevirew from "../page/ReviewsAll/ReviewsAllEditRevirew";
+import NotfoundPage from "../page/NotfoundPage";
 
 
 
@@ -71,7 +72,7 @@ const router = createBrowserRouter([
         <MainLayout />
       </PrivetRoute>
     ),
-    errorElement: <h1>Error</h1>,
+    errorElement: <NotfoundPage />,
     children: [
       {
         index: true,
@@ -251,7 +252,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/auth",
-    errorElement: <h1>Auth Error</h1>,
+    errorElement: <NotfoundPage />,
     children: [
       {
         index: true,

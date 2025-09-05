@@ -113,6 +113,8 @@ const Settings = () => {
           </h2>
         </div>
       ))}
+
+
       <Modal
         title={
           <div
@@ -318,6 +320,7 @@ const Settings = () => {
           </div>
         )}
       </Modal>
+
     </section>
   );
 };

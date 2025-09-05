@@ -152,7 +152,7 @@ const RecentTransactions = ({ fullData }) => {
             <FaRegUserCircle className="text-2xl text-[#704AAA]" />
           </button>
           <button>
-            <MdOutlineBlock className="text-2xl text-[#704AAA]" />
+            {/* <MdOutlineBlock className="text-2xl text-[#704AAA]" /> */}
           </button>
         </Space>
       ),

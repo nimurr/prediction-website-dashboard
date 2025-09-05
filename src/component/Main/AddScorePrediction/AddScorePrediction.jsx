@@ -121,7 +121,7 @@ const AddScorePrediction = () => {
 
                 const res = await createScorePrediction(formData).unwrap();
                 console.log(res);
-
+                setOpenForm(false);
                 message.success("New prediction added!");
 
 

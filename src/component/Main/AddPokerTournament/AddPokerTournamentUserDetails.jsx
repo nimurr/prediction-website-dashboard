@@ -10,14 +10,31 @@ import {
     Divider,
 } from "antd";
 import { AiOutlineEye } from "react-icons/ai"; // (ভবিষ্যতে দরকার হলে)
+import { useDeclearAsWinnerMutation, useGetFullPokerTournamentQuery } from "../../../redux/features/pokerPrediction/pokerPrediction";
+import { useParams } from "react-router-dom";
 const { Text, Paragraph, Title } = Typography;
 
 const StatusTag = ({ status }) => {
-    if (status?.toLowerCase() === "winner") return <Tag color="green">Winner</Tag>;
-    return <Tag color="red">lossed</Tag>;
+
+
+    if (status) return <Tag color="green">Winner</Tag>;
+    return <Tag color="red">Yet To Results</Tag>;
 };
 
 const AddPokerTournamentUserDetails = () => {
+
+
+
+    const { id } = useParams();
+    const predictionId = new URLSearchParams(window.location.search).get("predictionId");
+
+
+    const { data } = useGetFullPokerTournamentQuery({ userId: id, predictionId });
+
+    const predictionInfo = data?.data?.pokerTournament;
+    const userInfo = data?.data?.userInfo[0];
+
+
     // Tournament header (পূর্বের নির্দেশনা অনুযায়ী)
     const header = {
         blockTitle: "Poker Tournament Predictors",
@@ -46,6 +63,21 @@ const AddPokerTournamentUserDetails = () => {
         </div>
     );
 
+
+
+    const [declearAsWinner] = useDeclearAsWinnerMutation()
+    const handleSubmitWiner = async () => {
+        try {
+            const res = await declearAsWinner({ userId: id, predictionId }).unwrap();
+            console.log(res)
+            if (res?.code == 200) {
+                message.success("Declear As Winner Successfully ")
+            }
+        } catch (error) {
+            message.error("faild to Decear Win")
+        }
+    }
+
     return (
         <section className="py-5 px-3">
             {/* Header / Tournament info */}
@@ -56,20 +88,20 @@ const AddPokerTournamentUserDetails = () => {
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                     <div>
                         <Title level={3} style={{ margin: 0 }}>
-                            {header.blockTitle}
+                            {predictionInfo?.blockTitle}
                         </Title>
                         <h2 className="text-4xl flex items-center gap-5 my-3">
                             <img className="w-10" src="/Sport/btc.png" alt="" />
-                            {header.tournamentTitle}
+                            {predictionInfo?.pokerTournamentTitle}
                         </h2>
 
                         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-1 text-gray-800">
-                            <p><span className="font-semibold">Buy In:</span> {header.buyIn}</p>
-                            <p><span className="font-semibold">Time:</span> {header.time}</p>
-                            <p><span className="font-semibold">Type:</span> {header.type}</p>
-                            <p><span className="font-semibold">Max Players:</span> {header.maxPlayers}</p>
-                            <p><span className="font-semibold">Sponsor:</span> {header.sponsor}</p>
-                            <p><span className="font-semibold">Rewards:</span> {header.rewards}</p>
+                            <p><span className="font-semibold">Buy In:</span> {predictionInfo?.buyIn}</p>
+                            <p><span className="font-semibold">Time:</span> {predictionInfo?.time}</p>
+                            <p><span className="font-semibold">Type:</span> {predictionInfo?.type}</p>
+                            <p><span className="font-semibold">Max Players:</span> {predictionInfo?.maxPlayers}</p>
+                            <p><span className="font-semibold">Sponsor:</span> {predictionInfo?.sponsor}</p>
+                            <p><span className="font-semibold">Rewards:</span> {predictionInfo?.rewards}</p>
                         </div>
                     </div>
                 </div>
@@ -87,63 +119,37 @@ const AddPokerTournamentUserDetails = () => {
                     </div>
 
                     <Row label="User Name">
-                        <Text className="text-xl">{details.userName}</Text>
+                        <Text className="text-xl">{userInfo?.casinoUsername}</Text>
                     </Row>
                     <Divider className="my-0" />
 
                     <Row label="Bitcointalk Username">
-                        <Text className="text-xl">{details.btctalk}</Text>
+                        <Text className="text-xl">{userInfo?.bitcointalkUsername}</Text>
                     </Row>
                     <Divider className="my-0" />
 
                     <Row label="Bitcoin Address">
                         <Text copyable className="text-xl font-mono break-all">
-                            {details.btcAddress}
+                            {userInfo?.bitcoinAddress}
                         </Text>
                     </Row>
                     <Divider className="my-0" />
 
                     <Row label="Predicted Price">
                         <span className="text-xl">
-                            $ {Number(details.predictedPrice).toLocaleString("en-US")}
+                            {(userInfo?.screenshotLink)}
                         </span>
                     </Row>
                     <Divider className="my-0" />
 
                     <Row label="Status">
-                        <StatusTag status={status} />
+                        <StatusTag status={userInfo?.isWinner} />
                     </Row>
 
                     <div className="mt-3">
-                        <Space>
-                            <Popconfirm
-                                title="Declare as Winner?"
-                                description="This will mark this predictor as Winner."
-                                okText="Confirm"
-                                onConfirm={() => {
-                                    setStatus("Winner");
-                                    message.success("Declared as Winner");
-                                }}
-                            >
-                                <button className="bg-[#704AAA] text-white py-3 px-8 rounded-lg">
-                                    Declare As Winner
-                                </button>
-                            </Popconfirm>
-
-                            <Popconfirm
-                                title="Mark as lossed?"
-                                description="This will mark this predictor as lossed."
-                                okText="Confirm"
-                                onConfirm={() => {
-                                    setStatus("lossed");
-                                    message.success("Marked as lossed");
-                                }}
-                            >
-                                <button className="py-3 px-8 rounded-lg border border-[#704AAA]">
-                                    Mark As lossed
-                                </button>
-                            </Popconfirm>
-                        </Space>
+                        <button onClick={handleSubmitWiner} className="bg-[#704AAA] text-white py-3 px-8 rounded-lg">
+                            Declare As Winner
+                        </button>
                     </div>
                 </div>
             </Card>

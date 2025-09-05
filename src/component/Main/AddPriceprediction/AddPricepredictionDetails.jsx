@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
     ConfigProvider,
     Table,
@@ -14,14 +14,20 @@ import { useGetSinglePricePredictionQuery } from "../../../redux/features/priceP
 import moment from "moment";
 
 const StatusTag = ({ status }) => {
-    if (status?.toLowerCase() === "winner") {
-        return <Tag color="green">Winner</Tag>;
-    }
-    return <Tag color="red">Yet to Results</Tag>;
+    return status ? <Tag color="green">Winner</Tag> : <Tag color="red">Yet to Results</Tag>;
 };
 
 const AddPricepredictionDetails = () => {
-    const { id } = useParams();
+    const params = useParams();
+    const [id, setId] = useState(params.id);
+
+    // Update id if route changes
+    useEffect(() => {
+        if (params.id !== id) {
+            setId(params.id);
+        }
+    }, [params.id]);
+
     const { data, isLoading } = useGetSinglePricePredictionQuery(id);
     const mainData = data?.data;
 
@@ -59,8 +65,8 @@ const AddPricepredictionDetails = () => {
             },
             {
                 title: "Status",
-                dataIndex: "status",
-                key: "status",
+                dataIndex: "isWinner",
+                key: "isWinner",
                 render: (s) => <StatusTag status={s} />,
             },
             {
@@ -81,7 +87,7 @@ const AddPricepredictionDetails = () => {
                 ),
             },
         ],
-        []
+        [id]
     );
 
     return (

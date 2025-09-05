@@ -6,7 +6,7 @@ import { useSingleFullPokerTournamentQuery } from "../../../redux/features/poker
 import { imageBaseUrl } from "../../../config/imageBaseUrl";
 
 const StatusTag = ({ status }) => {
-    if (status?.toLowerCase() === "winner") return <Tag color="green">Winner</Tag>;
+    if (status) return <Tag color="green">Winner</Tag>;
     return <Tag color="red">Yet to Results</Tag>;
 };
 
@@ -17,6 +17,7 @@ const AddPokerTournamentDetails = () => {
     const fullData = data?.data;
     console.log(fullData);
     const rows = fullData?.applyPokerTournamentUsers || [];
+
 
     const columns = useMemo(
         () => [
@@ -54,8 +55,8 @@ const AddPokerTournamentDetails = () => {
             },
             {
                 title: "Status",
-                dataIndex: "status",
-                key: "status",
+                dataIndex: "isWinner",
+                key: "isWinner",
                 render: (s) => <StatusTag status={s} />,
             },
             {
@@ -66,7 +67,7 @@ const AddPokerTournamentDetails = () => {
                     <Space>
                         <Tooltip title="View">
                             <Link
-                                to={`/add-poker-tournament/predictor/${record._id}`}
+                                to={`/add-poker-tournament/predictor/${record._id}?predictionId=${fullData?._id}`}
                                 className="p-2 inline-block rounded hover:bg-gray-100"
                             >
                                 <AiOutlineEye className="text-xl" />

@@ -39,6 +39,20 @@ const pokerPredictionApi = baseApi.injectEndpoints({
             }),
             providesTags: ["PokerTournament"],
         }),
+        getFullPokerTournament: builder.query({
+            query: ({ userId, predictionId }) => ({
+                url: `/poker-tournament/full-poker-prediction?userId=${userId}&predictionId=${predictionId}`,
+                method: "GET",
+            }),
+            providesTags: ["PokerTournament"],
+        }),
+        declearAsWinner: builder.mutation({
+            query: ({ userId, predictionId }) => ({
+                url: `/poker-tournament/declare-winning?userId=${userId}&predictionId=${predictionId}`,
+                method: "PATCH",
+            }),
+            invalidatesTags: ["PokerTournament"],
+        }),
     }),
 });
 
@@ -47,5 +61,7 @@ export const {
     useGetAllPokerTuranmentQuery,
     useUpdatePokerTuranamentMutation,
     useDeletePokerTournamentMutation,
-    useSingleFullPokerTournamentQuery
+    useSingleFullPokerTournamentQuery,
+    useDeclearAsWinnerMutation,
+    useGetFullPokerTournamentQuery
 } = pokerPredictionApi;

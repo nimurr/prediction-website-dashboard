@@ -1,3 +1,3 @@
-const Url = 'http://72.60.47.236:8000'
+const Url = 'https://api.contesthunters.com'
 
 export default Url

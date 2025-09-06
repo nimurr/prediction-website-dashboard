@@ -1,11 +1,11 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react' // or your framework plugin
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server:{
-    host:"0.0.0.0",
-    port:3000,
+  preview: {
+    host: true, // allows access from network
+    port: 4173, // your Vite preview port
+    allowedHosts: ['admin.contesthunters.com'] // add your domain here
   }
 })

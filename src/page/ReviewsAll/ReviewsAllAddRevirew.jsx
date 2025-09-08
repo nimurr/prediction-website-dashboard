@@ -208,9 +208,12 @@ const ReviewsAllAddReview = () => {
                     image: s.image
                 }))
             };
+            console.log(data);
 
             const res = await createReviewMin(data).unwrap();
             console.log(res);
+
+
             if (res.status) {
                 message.success("Review added successfully!");
                 setTimeout(() => {

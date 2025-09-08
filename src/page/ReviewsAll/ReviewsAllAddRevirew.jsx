@@ -136,6 +136,7 @@ const ReviewsAllAddReview = () => {
                 description: res?.data?.data?.description,
                 image: res?.data?.data?.image,
             };
+            console.log(res);
 
             setFormData((prev) => ({
                 ...prev,

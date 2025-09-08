@@ -205,7 +205,7 @@ const ReviewsAllAddReview = () => {
                 negativesSides: formData.negativeSide.map(n => n.heading) || [],
                 otherAllInfoTitleDescriptionImage: formData.extraSections.map(s => ({
                     description: s.description || null,
-                    image: s.image
+                    image: s.image || null
                 }))
             };
             console.log(data);

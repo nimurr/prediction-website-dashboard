@@ -218,7 +218,7 @@ const ReviewsAllAddReview = () => {
             if (res.status) {
                 message.success("Review added successfully!");
                 setTimeout(() => {
-                    window.location.reload()
+                    // window.location.reload()
                 }, 2000)
             }
             else {

@@ -21,6 +21,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { useCreateScorePredictionMutation, useDeleteScorePredictionMutation, useGetAllPredictionsQuery, useUpdateScorePredictionMutation } from "../../../redux/features/scorePrediction/scorePrediction";
 import { imageBaseUrl } from "../../../config/imageBaseUrl";
+import moment from "moment";
 
 const { TextArea } = Input;
 
@@ -338,8 +339,10 @@ const AddScorePrediction = () => {
                             style={{ width: "100%" }}
                             showTime
                             placeholder="Select Deadline time"
+                            disabledDate={(current) => current && current < moment().startOf("day")}
                         />
                     </Form.Item>
+
                 </Form>
             </Modal>
         </section>

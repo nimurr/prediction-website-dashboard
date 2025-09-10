@@ -247,7 +247,7 @@ const ReviewsAllAddReview = () => {
                     <input type="text" name="casinoLink" placeholder="Open Url" value={formData.casinoLink} onChange={handleChange} className="w-full border p-2 rounded" required />
                     <input type="text" name="bonusTitle" placeholder="Bonus Title" value={formData.bonusTitle} onChange={handleChange} className="w-full border p-2 rounded" required />
                     <input type="text" name="freeSpinsBonus" placeholder="Free Spins Bonus" value={formData.freeSpinsBonus} onChange={handleChange} className="w-full border p-2 rounded" />
-                    <input type="date" name="lastUpdateDate" value={formData.lastUpdateDate} onChange={handleChange} className="w-full border p-2 rounded" required />
+                    <input type="date" min={new Date().toISOString().split("T")[0]} name="lastUpdateDate" value={formData.lastUpdateDate} onChange={handleChange} className="w-full border p-2 rounded" required />
                     <input type="number" step="0.1" name="adminAvgRating" placeholder="Admin Avg Rating" onChange={handleChange} className="w-full border p-2 rounded" />
                     <input type="text" name="summaryTitle" placeholder="Summary Title" value={formData.summaryTitle} onChange={handleChange} className="w-full border p-2 rounded" required />
 

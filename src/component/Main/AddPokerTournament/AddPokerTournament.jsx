@@ -27,6 +27,7 @@ import {
     useUpdatePokerTuranamentMutation,
 } from "../../../redux/features/pokerPrediction/pokerPrediction";
 import { imageBaseUrl } from "../../../config/imageBaseUrl";
+import moment from "moment";
 
 const AddPokerTournament = () => {
     const { data, isLoading, refetch } = useGetAllPokerTuranmentQuery();
@@ -396,6 +397,7 @@ const AddPokerTournament = () => {
                             style={{ width: "100%" }}
                             showTime
                             placeholder="Enter Poker Tournament Time"
+                            disabledDate={(current) => current && current < moment().startOf("day")}
                         />
                     </Form.Item>
 

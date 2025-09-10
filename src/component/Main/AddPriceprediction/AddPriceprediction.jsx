@@ -83,7 +83,7 @@ const AddPriceprediction = () => {
                 key: "predictedPrice",
                 ellipsis: true,
                 render: (s) => (
-                    <p  to={s} className="font-mono">
+                    <p to={s} className="font-mono">
                         {s}$
                     </p>
                 ),
@@ -397,6 +397,7 @@ const AddPriceprediction = () => {
                             style={{ width: "100%" }}
                             showTime
                             placeholder="Select deadline"
+                            disabledDate={(current) => current && current < moment().startOf("day")}
                         />
                     </Form.Item>
                 </Form>

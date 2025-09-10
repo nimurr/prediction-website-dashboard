@@ -265,7 +265,6 @@ const ReviewsAllAddReview = () => {
                         ))}
                         <button type="button" onClick={addInfoField} className="bg-blue-500 text-white px-4 py-1 rounded">+ Add Info</button>
                     </div>
-
                     {/* POSITIVE SIDE */}
                     <div>
                         <h3 className="text-lg font-semibold mb-2">Positive Side</h3>

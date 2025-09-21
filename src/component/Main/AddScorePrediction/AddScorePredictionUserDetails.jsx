@@ -141,7 +141,7 @@ const AddScorePredictionUserDetails = () => {
                             {userInfo?.email}
                         </a>
                     </Row>
-                    <Row label="Prediction Time">
+                    <Row label="1st Goal ">
                         <a href={`mailto:${userInfo?.predictionTime}`} className="break-all">
                             {userInfo?.predictionTime}
                         </a>

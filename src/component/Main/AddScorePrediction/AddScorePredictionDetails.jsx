@@ -26,29 +26,34 @@ const AddScorePredictionDetails = () => {
     const { data, isLoading } = useGetSingleScorePredictionQuery(id);
     const mainData = data?.data;
 
+    console.log(mainData);
+
     const columns = useMemo(
         () => [
+            {
+                title: "BTT Username",
+                dataIndex: "bitcointalkUsername",
+                key: "bitcointalkUsername",
+            },
             {
                 title: "Casino Username",
                 dataIndex: "casinoUsername",
                 key: "casinoUsername",
             },
             {
-                title: "Bitcointalk Username",
-                dataIndex: "bitcointalkUsername",
-                key: "bitcointalkUsername",
+                title: "Bet ID",
+                dataIndex: "BetID",
+                key: "BetID",
             },
             {
-                title: "Bitcoin Address",
-                dataIndex: "bitcoinAddress",
-                key: "bitcoinAddress",
-                ellipsis: true,
-                render: (addr) => <span className="font-mono">{addr}</span>,
+                title: "1st Goal",
+                dataIndex: "predictionTime",
+                key: "predictionTime",
             },
             {
-                title: "Choosed Team",
-                dataIndex: "selectTeam",
-                key: "selectTeam",
+                title: "Yellow Card",
+                dataIndex: "totalYellowCard",
+                key: "totalYellowCard",
             },
             {
                 title: "Status",

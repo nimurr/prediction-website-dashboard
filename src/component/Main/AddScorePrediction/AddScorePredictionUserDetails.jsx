@@ -131,14 +131,24 @@ const AddScorePredictionUserDetails = () => {
                         <Text className="text-xl">{userInfo?.casinoUsername}</Text>
                     </Row>
                     <Divider className="my-0" />
+                    <Row label="Bet ID">
+                        <a href={`mailto:${userInfo?.BetID}`} className="break-all">
+                            {userInfo?.BetID || 'N/A'}
+                        </a>
+                    </Row>
                     <Row label="Email (optional)">
                         <a href={`mailto:${userInfo?.email}`} className="break-all">
                             {userInfo?.email}
                         </a>
                     </Row>
+                    <Row label="Prediction Time">
+                        <a href={`mailto:${userInfo?.predictionTime}`} className="break-all">
+                            {userInfo?.predictionTime}
+                        </a>
+                    </Row>
                     <Divider className="my-0" />
-                    <Row label="Choosed Team">
-                        <Tag className="text-xl" color="blue">{userInfo?.selectTeam}</Tag>
+                    <Row label="Total Yellow Card">
+                        <Tag className="text-xl" color="blue">{userInfo?.totalYellowCard}</Tag>
                     </Row>
                     <Divider className="my-0" />
                     <Row label="Wining Status">

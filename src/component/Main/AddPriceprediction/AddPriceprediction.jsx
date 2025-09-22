@@ -78,6 +78,14 @@ const AddPriceprediction = () => {
                 render: (s) => <span className="font-mono">{moment(s).format("D-MM-YYYY")}</span>,
             },
             {
+                title: "sponsorLink",
+                dataIndex: "sponsorLink",
+                key: "sponsorLink",
+                ellipsis: true,
+                render: (_, item) => <Link target="_blank" to={item.sponsorLink} className="">{item.sponsorLink}</Link>,
+            },
+
+            {
                 title: "Reward Amount",
                 dataIndex: "predictedPrice",
                 key: "predictedPrice",
@@ -162,6 +170,8 @@ const AddPriceprediction = () => {
             title: row.bitcoinTitle || row.title,
             subtitle: row.bitcoinSubtitle || row.subtitle,
             predictedPrice: row.predictedPrice,
+            sponsorLink: row.sponsorLink,
+            sponsorName: row.sponsorName,
             deadline: row.predictionDeadline ? dayjs(row.predictionDeadline) : null,
         });
         setOpenForm(true);
@@ -206,6 +216,8 @@ const AddPriceprediction = () => {
                     bitcoinTitle: values.title,
                     bitcoinSubtitle: values.subtitle,
                     predictedPrice: values.predictedPrice,
+                    sponsorLink: values.sponsorLink,
+                    sponsorName: values.sponsorName,
                     predictionDeadline: deadlineStr,
                     bitcoinImage: imageUrl,
                 };
@@ -218,6 +230,8 @@ const AddPriceprediction = () => {
                     formData.append("bitcoinTitle", values.title);
                     formData.append("bitcoinSubtitle", values.subtitle);
                     formData.append("predictedPrice", values.predictedPrice);
+                    formData.append("sponsorLink", values.sponsorLink);
+                    formData.append("sponsorName", values.sponsorName);
                     formData.append("predictionDeadline", deadlineStr);
 
                     const response = await createPricePrediction(formData).unwrap();
@@ -242,6 +256,8 @@ const AddPriceprediction = () => {
                                 bitcoinTitle: values.title,
                                 bitcoinSubtitle: values.subtitle,
                                 predictedPrice: values.predictedPrice,
+                                sponsorLink: values.sponsorLink,
+                                sponsorName: values.sponsorName,
                                 predictionDeadline: deadlineStr,
                                 bitcoinImage: imageUrl,
                             }
@@ -256,6 +272,8 @@ const AddPriceprediction = () => {
                     formData.append("bitcoinTitle", values.title);
                     formData.append("bitcoinSubtitle", values.subtitle);
                     formData.append("predictedPrice", values.predictedPrice);
+                    formData.append("sponsorLink", values.sponsorLink);
+                    formData.append("sponsorName", values.sponsorName);
                     formData.append("predictionDeadline", deadlineStr);
                     console.log(editingRow.id);
 
@@ -385,6 +403,25 @@ const AddPriceprediction = () => {
                     >
                         <Input className="!h-12" placeholder="Enter Reward Amount" />
                     </Form.Item>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <Form.Item
+                            label="sponsorName"
+                            name="sponsorName"
+                            rules={[{ required: true, message: "Enter Your Sponsor Name" }]}
+                        >
+                            <Input className="!h-12" placeholder="Enter Your Sponsor Name" />
+                        </Form.Item>
+                        <Form.Item
+                            label="sponsorLink"
+                            name="sponsorLink"
+                            rules={[{ required: true, message: "Enter Your Sponsor Link" }]}
+                        >
+                            <Input className="!h-12" placeholder="Enter Your Sponsor Link" />
+                        </Form.Item>
+
+                    </div>
+
 
                     {/* Prediction Deadline */}
                     <Form.Item

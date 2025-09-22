@@ -78,11 +78,17 @@ const AddPriceprediction = () => {
                 render: (s) => <span className="font-mono">{moment(s).format("D-MM-YYYY")}</span>,
             },
             {
-                title: "sponsorLink",
+                title: "Sponsor Name",
+                dataIndex: "sponsorName",
+                key: "sponsorName",
+                ellipsis: true,
+            },
+            {
+                title: "Sponsor Link",
                 dataIndex: "sponsorLink",
                 key: "sponsorLink",
                 ellipsis: true,
-                render: (_, item) => <Link target="_blank" to={item.sponsorLink} className="">{item.sponsorLink}</Link>,
+                render: (_, item) => <Link target="_blank" to={item.sponsorLink} className="">{item.sponsorLink?.slice(0, 40) || "-"}</Link>,
             },
 
             {

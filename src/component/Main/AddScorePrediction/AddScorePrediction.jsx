@@ -179,16 +179,17 @@ const AddScorePrediction = () => {
                 ellipsis: true,
             },
             {
-                title: "sponsorName",
+                title: "Sponsor Name",
                 dataIndex: "sponsorName",
                 key: "sponsorName",
                 ellipsis: true,
             },
             {
-                title: "sponsorLink",
+                title: "Sponsor Link",
                 dataIndex: "sponsorLink",
                 key: "sponsorLink",
                 ellipsis: true,
+                render: (_, item) => <Link target="_blank" to={item.sponsorLink}>{item.sponsorLink}</Link>
             },
             {
                 title: "Deadline",

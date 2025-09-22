@@ -121,8 +121,8 @@ const AddScorePrediction = () => {
                 formData.append("sportDescription", values.sportDescription);
                 formData.append("firstTeamName", values.firstTeamName);
                 formData.append("secondTeamName", values.secondTeamName);
-                formData.append("sponsorLink", values.firstTeamName);
-                formData.append("sponsorName", values.firstTeamName);
+                formData.append("sponsorLink", values.sponsorLink);
+                formData.append("sponsorName", values.sponsorName);
                 formData.append("predictionDeadline", values.predictionDeadline?.toISOString());
 
 
@@ -142,8 +142,8 @@ const AddScorePrediction = () => {
                 formData.append("sportDescription", values.sportDescription);
                 formData.append("firstTeamName", values.firstTeamName);
                 formData.append("secondTeamName", values.secondTeamName);
-                formData.append("sponsorLink", values.firstTeamName);
-                formData.append("sponsorName", values.firstTeamName);
+                formData.append("sponsorLink", values.sponsorLink);
+                formData.append("sponsorName", values.sponsorName);
                 formData.append("predictionDeadline", values.predictionDeadline?.toISOString());
 
 
@@ -176,6 +176,18 @@ const AddScorePrediction = () => {
                 title: "Description",
                 dataIndex: "sportDescription",
                 key: "sportDescription",
+                ellipsis: true,
+            },
+            {
+                title: "sponsorName",
+                dataIndex: "sponsorName",
+                key: "sponsorName",
+                ellipsis: true,
+            },
+            {
+                title: "sponsorLink",
+                dataIndex: "sponsorLink",
+                key: "sponsorLink",
                 ellipsis: true,
             },
             {

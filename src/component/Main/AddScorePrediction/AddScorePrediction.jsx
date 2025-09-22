@@ -78,6 +78,8 @@ const AddScorePrediction = () => {
             sportDescription: row.sportDescription,
             firstTeamName: row.firstTeamName,
             secondTeamName: row.secondTeamName,
+            sponsorLink: row.sponsorLink,
+            sponsorName: row.sponsorName,
             predictionDeadline: row.predictionDeadline ? dayjs(row.predictionDeadline) : null,
         });
         setOpenForm(true);
@@ -105,6 +107,8 @@ const AddScorePrediction = () => {
                 sportDescription: values.sportDescription,
                 firstTeamName: values.firstTeamName,
                 secondTeamName: values.secondTeamName,
+                sponsorLink: values.sponsorLink,
+                sponsorName: values.sponsorName,
                 predictionDeadline: values.predictionDeadline?.toISOString()
             };
 
@@ -117,6 +121,8 @@ const AddScorePrediction = () => {
                 formData.append("sportDescription", values.sportDescription);
                 formData.append("firstTeamName", values.firstTeamName);
                 formData.append("secondTeamName", values.secondTeamName);
+                formData.append("sponsorLink", values.firstTeamName);
+                formData.append("sponsorName", values.firstTeamName);
                 formData.append("predictionDeadline", values.predictionDeadline?.toISOString());
 
 
@@ -136,6 +142,8 @@ const AddScorePrediction = () => {
                 formData.append("sportDescription", values.sportDescription);
                 formData.append("firstTeamName", values.firstTeamName);
                 formData.append("secondTeamName", values.secondTeamName);
+                formData.append("sponsorLink", values.firstTeamName);
+                formData.append("sponsorName", values.firstTeamName);
                 formData.append("predictionDeadline", values.predictionDeadline?.toISOString());
 
 
@@ -327,6 +335,23 @@ const AddScorePrediction = () => {
                         >
                             <Input className="!h-12" placeholder="Enter Second Team Name" />
                         </Form.Item>
+
+                        <Form.Item
+                            label="Sponsor Name"
+                            name="sponsorName"
+                            rules={[{ required: true, message: "Enter Sponsor Name" }]}
+                        >
+                            <Input className="!h-12" placeholder="Enter Sponsor Name" />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Sponsor Link"
+                            name="sponsorLink"
+                            rules={[{ required: true, message: "Enter Sponsor Link" }]}
+                        >
+                            <Input className="!h-12" placeholder="Enter Sponsor Link" />
+                        </Form.Item>
+
                     </div>
 
                     <Form.Item

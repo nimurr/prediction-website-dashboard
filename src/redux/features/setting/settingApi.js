@@ -82,10 +82,17 @@ const settingApi = baseApi.injectEndpoints({
 
     getAllNotification: builder.query({
       query: () => ({
-        url: "/notifications",
+        url: "/privacy-policy/all/notification",
         method: "GET",
         providesTags: ["Notification"],
       }),
+    }),
+    updateNotification: builder.mutation({
+      query: (id) => ({
+        url: `/privacy-policy/unread/notification/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Notification"],
     }),
 
 
@@ -108,4 +115,5 @@ export const {
   useUpdateProfileMutation,
 
   useGetAllNotificationQuery
+  , useUpdateNotificationMutation
 } = settingApi;

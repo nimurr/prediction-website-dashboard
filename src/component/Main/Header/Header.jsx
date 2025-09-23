@@ -41,8 +41,8 @@ const Header = ({ toggleSidebar }) => {
             <MdNotificationsNone className="size-8" />{" "}
             {/* <span className="absolute top-0 right-0 w-5 h-5 text-white text-xs flex justify-center items-center bg-red-500 rounded-full">99+</span> */}
           </h1>
-
         </Link>
+        
         <img
           className="w-12 h-12 rounded-full"
           src={user?.profileImage ? Url + user?.profileImage : userImage}

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FaAngleLeft } from "react-icons/fa";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { Link } from "react-router-dom";
-import { useGetAllNotificationQuery } from "../../../redux/features/setting/settingApi";
+import { useGetAllNotificationQuery, useUpdateNotificationMutation } from "../../../redux/features/setting/settingApi";
 import moment from "moment";
 
 const Notification = () => {
@@ -11,50 +11,27 @@ const Notification = () => {
   const pageSize = 10;
 
   const { data: allNotification } = useGetAllNotificationQuery();
+  const notificationData = allNotification?.data;
+  console.log(notificationData);
 
   const [notifications, setNotifications] = useState([]);
 
-  // ---- Demo generator (fallback) ----
-  const makeDemoNotifications = (count = 35) => {
-    const demoMessages = [
-      "Your prediction was approved.",
-      "New match added: Real Madrid vs Barcelona.",
-      "Payout sent to your Bitcoin address.",
-      "Reminder: Submit prediction before deadline.",
-      "You won! Claim your prize.",
-      "Your account settings were updated.",
-      "New comment on your prediction.",
-    ];
-    return Array.from({ length: count }).map((_, i) => {
-      // spread times over minutes/hours/days
-      const mins = (i + 1) * 17; // 17-minute gaps
-      const createdAt = moment().subtract(mins, "minutes").toISOString();
-      return {
-        id: `demo-${i + 1}`,
-        message: demoMessages[i % demoMessages.length],
-        createdAt,
-        read: i > 3, // first few are unread
-      };
-    });
-  };
-
-  // ---- Load API or fallback to demo ----
+  // ---- Load API notifications ----
   useEffect(() => {
-    const apiList = allNotification?.notifications;
-    if (Array.isArray(apiList) && apiList.length) {
-      // ensure "read" flag exists
-      const normalized = apiList.map((n, idx) => ({
-        id: n.id ?? `api-${idx}`,
-        message: n.message ?? "Notification",
+    if (Array.isArray(notificationData) && notificationData.length) {
+      const normalized = notificationData.map((n, idx) => ({
+        id: n._id ?? `api-${idx}`,
+        title: n.title ?? "Notification",
+        message: n.content ?? "",
+        status: n.status ?? "unread", // backend field
         createdAt: n.createdAt ?? new Date().toISOString(),
-        read: typeof n.read === "boolean" ? n.read : false,
       }));
       setNotifications(normalized);
     } else {
-      setNotifications(makeDemoNotifications(37));
+      setNotifications([]); // no demo fallback needed in prod
     }
     setCurrentPage(1);
-  }, [allNotification]);
+  }, [notificationData]);
 
   // ---- Pagination ----
   const paginated = notifications.slice(
@@ -64,11 +41,22 @@ const Notification = () => {
 
   const onPageChange = (page) => setCurrentPage(page);
 
-  // ---- Toggle read/unread ----
-  const toggleRead = (id) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: !n.read } : n))
-    );
+  // ---- Toggle read/unread (local only) ----
+  const [updateNotification] = useUpdateNotificationMutation();
+  const toggleRead = async (id) => {
+    console.log(id);
+    try {
+      const res = await updateNotification(id);
+      console.log(res);
+      if (res?.data?.success == true) {
+        const updated = notifications.map((n) =>
+          n.id === id ? { ...n, status: "read" } : n
+        );
+        setNotifications(updated);
+      }
+    } catch (error) {
+      console.error("Failed to update notification:", error);
+    }
   };
 
   return (
@@ -79,22 +67,22 @@ const Notification = () => {
 
       <div className="space-y-4">
         {paginated.map((item) => {
-          const isUnread = !item.read;
+          const isUnread = item.status === "unread";
           return (
             <div
               key={item.id}
               onClick={() => toggleRead(item.id)}
               className={`border rounded-md p-4 flex items-center space-x-4 cursor-pointer transition
-                ${
-                  isUnread
-                    ? "border-[#704AAA] hover:bg-[#7f55bd88]"
-                    : "border-gray-200 hover:bg-gray-50"
+                ${isUnread
+                  ? "border-[#704AAA] hover:bg-[#7f55bd88]"
+                  : "border-gray-200 hover:bg-gray-50"
                 }`}
             >
               <div
-                className={`relative rounded-full p-2 ${
-                  isUnread ? "text-[#704AAA] border border-[#704AAA]" : "text-gray-400 border border-gray-300"
-                }`}
+                className={`relative rounded-full p-2 ${isUnread
+                  ? "text-[#704AAA] border border-[#704AAA]"
+                  : "text-gray-400 border border-gray-300"
+                  }`}
               >
                 {isUnread && (
                   <span className="bg-[#704AAA] w-2 h-2 rounded-full absolute -top-1 -right-1" />
@@ -104,9 +92,10 @@ const Notification = () => {
 
               <div>
                 <p className={`font-semibold ${isUnread ? "" : "text-gray-600"}`}>
-                  {item.message}
+                  {item.title}
                 </p>
-                <p className="text-gray-500">
+                <p className="text-gray-500">{item.message}</p>
+                <p className="text-gray-400 text-sm">
                   {moment(item.createdAt).fromNow()}
                 </p>
               </div>

@@ -65,8 +65,18 @@ const Notification = () => {
         <FaAngleLeft /> Notification
       </Link>
 
+      <div>
+        {
+          notificationData?.length == 0 && (
+            <div className="text-center my-10 text-gray-500 mt-20">
+              No notifications available.
+            </div>
+          )
+        }
+      </div>
+
       <div className="space-y-4">
-        {paginated.map((item) => {
+        {paginated?.map((item) => {
           const isUnread = item.status === "unread";
           return (
             <div

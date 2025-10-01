@@ -28,6 +28,7 @@ import {
 } from "../../../redux/features/pokerPrediction/pokerPrediction";
 import { imageBaseUrl } from "../../../config/imageBaseUrl";
 import moment from "moment";
+import TextArea from "antd/es/input/TextArea";
 
 const AddPokerTournament = () => {
     const { data, isLoading, refetch } = useGetAllPokerTuranmentQuery();
@@ -94,6 +95,12 @@ const AddPokerTournament = () => {
                 dataIndex: "rewards",
                 key: "rewards",
                 render: (_, r) => <span>{r.rewards}$</span>,
+            },
+            {
+                title: "Details",
+                dataIndex: "details",
+                key: "details",
+                render: (_, r) => <span>{r?.details?.slice(0, 50) || "--"}</span>,
             },
             {
                 title: "Join Link",
@@ -191,6 +198,7 @@ const AddPokerTournament = () => {
             sponsor: row.sponsor,
             rewards: row.rewards,
             joinLink: row.joinLink,
+            details: row.details,
         });
         setOpenForm(true);
     };
@@ -232,9 +240,11 @@ const AddPokerTournament = () => {
             formData.append("sponsor", values.sponsor);
             formData.append("rewards", values.rewards);
             formData.append("joinLink", values.joinLink);
+            formData.append("details", values.details);
 
             if (mode === "add") {
-                await createPokerTournament(formData).unwrap();
+                const response = await createPokerTournament(formData).unwrap();
+                console.log(response);
                 message.success("Poker tournament added successfully!");
             } else if (mode === "edit" && editingRow) {
 
@@ -250,6 +260,7 @@ const AddPokerTournament = () => {
                 formData.append("sponsor", values.sponsor);
                 formData.append("rewards", values.rewards);
                 formData.append("joinLink", values.joinLink);
+                formData.append("details", values.details);
 
                 const response = await updatePokerTournament({ formData, id: editingRow._id }).unwrap();
                 if (response?.code == 200) {
@@ -471,6 +482,19 @@ const AddPokerTournament = () => {
                         ]}
                     >
                         <Input className="!h-12" placeholder="Enter Join Link" />
+                    </Form.Item>
+                    {/* // details with textArea */}
+                    <Form.Item
+                        label="Details"
+                        name="details"
+                        rules={[
+                            { required: true, message: "Enter Poker Tournament Details" },
+                        ]}
+                    >
+                        <TextArea
+                            className="!h-12"
+                            placeholder="Enter Poker Tournament Details"
+                        />
                     </Form.Item>
                 </Form>
             </Modal>
